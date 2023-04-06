@@ -24,7 +24,7 @@ exports.addReason = async (req, res) => {
             )
         }
         
-        const query = 'INSERT INTO cancellation_reasons (reason_title , percentage_deduction) VALUES ($1 , $2) RETURNING*'
+        const query = 'INSERT INTO complain_reasons (reason_title , percentage_deduction) VALUES ($1 , $2) RETURNING*'
         const result = await pool.query(query , 
             [
                 reason_title ? reason_title : null ,
@@ -81,7 +81,7 @@ exports.updateReason = async (req, res) => {
         }
        
 
-        let query = 'UPDATE cancellation_reasons SET percentage_deduction= $1 WHERE cancellation_reason_id = $2 RETURNING*'
+        let query = 'UPDATE complain_reasons SET percentage_deduction= $1 WHERE complain_reason_id = $2 RETURNING*'
         let values =[
            percentage_deduction ? percentage_deduction : null,
            reason_id ? reason_id : null
@@ -123,7 +123,7 @@ exports.deleteReason = async (req, res) => {
                 })
             )
         }
-        const query = 'DELETE FROM cancellation_reasons WHERE cancellation_reason_id = $1 RETURNING *';
+        const query = 'DELETE FROM complain_reasons WHERE complain_reason_id = $1 RETURNING *';
         const result = await pool.query(query , [reason_id]);
 
         if(result.rowCount>0){
@@ -153,7 +153,7 @@ exports.deleteReason = async (req, res) => {
 exports.getAllReasons = async (req, res) => {
     try {
 
-        const query = 'SELECT * FROM cancellation_reasons'
+        const query = 'SELECT * FROM complain_reasons'
         const result = await pool.query(query);
 
 
@@ -193,7 +193,7 @@ exports.getReasonById = async (req, res) => {
                 })
             )
         }
-        const query = 'SELECT * FROM cancellation_reasons WHERE cancellation_reason_id = $1'
+        const query = 'SELECT * FROM complain_reasons WHERE complain_reason_id = $1'
         const result = await pool.query(query , [reason_id]);
 
         if (result.rowCount>0) {

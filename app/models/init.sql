@@ -70,4 +70,22 @@ CREATE TABLE IF NOT EXISTS commissions(
   trash BOOLEAN,
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS cancellation_reasons(
+  cancellation_reason_id SERIAL PRIMARY KEY ,
+  reason_title TEXT,
+  percentage_deduction TEXT,
+  trash BOOLEAN,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS complain_reasons(
+  complain_reason_id SERIAL PRIMARY KEY ,
+  reason_title TEXT,
+  percentage_deduction TEXT,
+  trash BOOLEAN,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
 )

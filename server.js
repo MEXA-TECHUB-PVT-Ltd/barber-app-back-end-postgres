@@ -47,14 +47,14 @@ app.use(cors({
  app.use("/lenght" , require("./app/routes/HAIR/lengthRoute"))
  app.use("/hairStyle" , require("./app/routes/HAIR/hairstyleRoute"))
  app.use("/hairCutPprice" , require("./app/routes/HAIR/hairCutPriceRoute"))
-//  app.use("/reasonOfCancellation" , require("./routes/ReasonCancellationRoute"))
+ app.use("/reasonOfCancellation" , require("./app/routes/HAIR/cancellation_reasonRoute"))
 /app.use("/commission" , require("./app/routes/HAIR/commissionRoute"))
  app.use("/emailVerification" , require("./app/routes/EMAIL_VERIFICATION/EmailVerificationRoute"))
 //  app.use("/time_slot" , require("./routes/time_slotsRoute"))
 //  app.use("/slot_day" , require("./routes/slot_daysCpntroller"))
 //  app.use("/payment" , require("./routes/payment_route"))
 //  app.use("/appointment" , require("./routes/appointmentRoute"))
-//  app.use("/reasonOfComplain" , require("./routes/reasonComplainRoute"))
+app.use("/reasonOfComplain" , require("./app/routes/HAIR/complain_reasonRoute"))
 //  app.use("/appointment_request" , require("./routes/appointmentRequestRoute"))
 
 
