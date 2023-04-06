@@ -7,6 +7,7 @@ const {pool} = require("../../config/db.config");
 
 
 exports.registerAdmin =async (req,res,next)=>{
+    const client = await pool.connect();
 
     try{
         const { error } = registerSchema.validate(req.body);
@@ -66,6 +67,10 @@ exports.registerAdmin =async (req,res,next)=>{
             error: err.message
         })
     }
+    finally {
+        client.release();
+      }
+    
     
 }
 

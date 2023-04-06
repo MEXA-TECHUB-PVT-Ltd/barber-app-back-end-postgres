@@ -2,6 +2,8 @@ const { query } = require("express");
 const {pool} = require("../../config/db.config");
 
 exports.createHairStyle = async (req, res) => {
+    const client = await pool.connect();
+
     try {
         const title = req.body.title;
         const image = req.body.image;
@@ -36,10 +38,14 @@ exports.createHairStyle = async (req, res) => {
             error: err.message
         })
     }
+    finally {
+        client.release();
+      }
 }
 
 
 exports.getAllHairStyles = async (req, res) => {
+    const client = await pool.connect();
     try {
         const allQuery = 'SELECT * FROM hairstyles INNER JOIN admins ON hairstyles.created_by_id = admins.id WHERE created_by = $1 AND trash= $2';
 
@@ -85,9 +91,13 @@ exports.getAllHairStyles = async (req, res) => {
             error: err.message
         })
     }
+    finally {
+        client.release();
+      }
 }
 
 exports.getHairStyle = async (req, res) => {
+    const client = await pool.connect();
     try {
 
         const hair_style_id = req.query.hair_style_id;
@@ -149,10 +159,14 @@ exports.getHairStyle = async (req, res) => {
             error: err.message
         })
     }
+    finally {
+        client.release();
+      }
 
 }
 
 exports.updateHairStyle = async (req, res) => {
+    const client = await pool.connect();
     try {
         const hair_style_id = req.body.hair_style_id;
         const title = req.body.title;
@@ -198,9 +212,13 @@ exports.updateHairStyle = async (req, res) => {
             error: err.message
         })
     }
+    finally {
+        client.release();
+      }
 }
 
 exports.deleteHairStyle= async (req , res)=>{
+    const client = await pool.connect();
     try{
         const hair_style_id = req.query.hair_style_id;
         if (!hair_style_id) {
@@ -238,4 +256,7 @@ exports.deleteHairStyle= async (req , res)=>{
             error: err.message
         })
     }
+    finally {
+        client.release();
+      }
 }

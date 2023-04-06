@@ -15,6 +15,9 @@ const transporter = nodemailer.createTransport({
 
 
 exports.sendEmail = async (req, res) => {
+    const client = await pool.connect();
+
+    
     try {
         const email = req.body.email;
 
@@ -48,9 +51,14 @@ exports.sendEmail = async (req, res) => {
             error: err.message
         })
     }
+
+finally {
+    client.release();
+  }
 }
 
 exports.verifyOTP = async (req,res)=>{
+    const client = await pool.connect();
     try{
         const email = req.body.email;
         const otp = req.body.otp;
@@ -79,6 +87,10 @@ exports.verifyOTP = async (req,res)=>{
           success:false,
         });
       }
+
+finally {
+    client.release();
+  }
 }
 
 

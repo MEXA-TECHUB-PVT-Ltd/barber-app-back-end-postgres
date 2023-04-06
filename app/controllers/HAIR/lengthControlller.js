@@ -4,6 +4,7 @@ const {pool} = require("../../config/db.config");
 
 
 exports.createLenght = async (req, res) => {
+    const client = await pool.connect();
     try {
         const name = req.body.name;
         let length = req.body.length;
@@ -84,9 +85,13 @@ exports.createLenght = async (req, res) => {
             error: err.message
         })
     }
+    finally {
+        client.release();
+      }
 }
 
 exports.get_all_lengths = async (req, res) => {
+    const client = await pool.connect();
     try {
         const query = 'SELECT * FROM lengths'
         const result = await pool.query(query);
@@ -113,9 +118,13 @@ exports.get_all_lengths = async (req, res) => {
             error: err.message
         })
     }
+    finally {
+        client.release();
+      }
 }
 
 exports.get_length = async (req, res) => {
+    const client = await pool.connect();
     try {
         const length_id = req.query.length_id;
 
@@ -155,9 +164,13 @@ exports.get_length = async (req, res) => {
             error: err.message
         })
     }
+    finally {
+        client.release();
+      }
 }
 
 exports.update_lenght = async (req, res) => {
+    const client = await pool.connect();
     try {
         const length_id = req.body.length_id;
         const length = req.body.length;
@@ -246,10 +259,14 @@ exports.update_lenght = async (req, res) => {
             error: err.message
         })
     }
+    finally {
+        client.release();
+      }
 }
 
 
 exports.deleteLength = async (req , res)=>{
+    const client = await pool.connect();
     try{
         const length_id = req.query.length_id;
         if (!length_id) {
@@ -286,4 +303,7 @@ exports.deleteLength = async (req , res)=>{
             error: err.message
         })
     }
+    finally {
+        client.release();
+      }
 }
