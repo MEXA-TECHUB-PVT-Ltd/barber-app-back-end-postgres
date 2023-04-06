@@ -1,3 +1,4 @@
+const { query } = require("express");
 const { pool } = require("../../config/db.config");
 
 
@@ -9,6 +10,8 @@ exports.createAppointment = async (req, res) => {
         const day = req.body.day;
         const long = req.body.long;
         const lat = req.body.lat;
+        let user_id = req.body.user_id;
+        user_id = parseInt(user_id)
 
 
 
@@ -46,10 +49,27 @@ exports.createAppointment = async (req, res) => {
 
 
 
+        // getting radius from table
+        const radius_query= 'SELECT * FROM radius WHERE radius_id= 1';
+        let radius = await pool.query(radius_query);
+        console.log(radius)
+        if(!radius.rows[0]){
+            return (
+                res.status(400).json({
+                    message: "radius is not set for this query by admin , please add radius in radius table to proceed",
+                    status: false
+                })
+            )
+        }
+        radius = radius.rows[0].radiusinkm;
+        radius = parseInt(radius)
+     
+
+
         let barbers;
         if (result) {
-            barbers = await getBarbersWithinRadius(lat, long, 35, pool)
-            console.log("sfgfas89f9a", barbers)
+            barbers = await getBarbersWithinRadius(lat, long, radius, pool , user_id)
+            console.log("Barbers", barbers)
         }
 
 
@@ -85,27 +105,41 @@ async function getRandomInt(max) {
 }
 
 
-async function getBarbersWithinRadius(centerLat, centerLng, radius, pool) {
+async function getBarbersWithinRadius(centerLat, centerLng, radius, pool , user_id) {
     const query = `
-    SELECT 
-    id, 
-    (
-        6371 * acos(
-            cos( radians(${centerLat}) ) * cos( radians( saloon_location->>'y'::text::float ) ) * cos( radians( saloon_location->>'x'::text::float ) - radians({${centerLng}}) ) + 
-            sin( radians(${centerLat}) ) * sin( radians( saloon_location->>'y'::text::float ) ) 
-        )
-    ) AS distance 
-FROM 
-    barbers 
-HAVING 
-    distance < 30
-ORDER BY distance;
-    `;
-    const values = [centerLng, centerLat, radius];
+    SELECT *, 
+      acos(sin(radians($1)) * sin(radians(saloon_latitude)) 
+        + cos(radians($1)) * cos(radians(saloon_latitude)) 
+        * cos(radians($2) - radians(saloon_longitude))) * 6371 as distance
+    FROM barbers
+    WHERE acos(sin(radians($1)) * sin(radians(saloon_latitude)) 
+        + cos(radians($1)) * cos(radians(saloon_latitude)) 
+        * cos(radians($2) - radians(saloon_longitude))) * 6371 <= $3`;
+    let values = [centerLat, centerLng, radius];
     try {
-        const res = await pool.query(query, values);
+        let array;
+        let res = await pool.query(query, values);
         console.log(res)
-        return res.rows;
+        array= res.rows;
+        array= array.filter((element)=>{
+            if(element.id != user_id ){
+                return element
+            }
+        });
+        if(array.length<5){
+            console.log("After added 10km more as babers are less than 5")
+            radius= radius+10;
+            console.log(radius)
+             values = [centerLat, centerLng, radius];
+             res = await pool.query(query , values);
+             array = res.rows;
+             array= array.filter((element)=>{
+                if(element.id != user_id ){
+                    return element
+                }
+            });
+        }
+        return array;
     } catch (err) {
         console.log(err)
     }
