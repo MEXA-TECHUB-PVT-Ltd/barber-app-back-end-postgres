@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const hairStylesUpload = require("../../middlewares/imageUpload")
 exports.uploadImage = async (req,res)=>{
+  const client = await pool.connect();
     try{
      
         hairStylesUpload(req, res, function (err) {
@@ -31,5 +32,9 @@ exports.uploadImage = async (req,res)=>{
     catch(err){
         res.json(err)
     }
+
+finally {
+  client.release();
+}
 }
 

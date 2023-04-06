@@ -18,6 +18,20 @@ CREATE TABLE IF NOT EXISTS barbers(
   updated_at TIMESTAMP DEFAULT NOW()
 );
 
+CREATE TABLE IF NOT EXISTS customers(
+  customer_id SERIAL PRIMARY KEY,
+  user_name TEXT,
+  password TEXT,
+  email TEXT UNIQUE NOT NULL,
+  device_token TEXT,
+  profile_image TEXT ,
+  gender TEXT,
+  location  POINT , 
+  block_status TEXT DEFAULT 'inactive',
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
 
 CREATE TABLE IF NOT EXISTS admins(
   id SERIAL PRIMARY KEY,
@@ -88,4 +102,42 @@ CREATE TABLE IF NOT EXISTS complain_reasons(
   trash BOOLEAN,
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
-)
+);
+
+CREATE TABLE IF NOT EXISTS slot_days(
+  slot_day_id SERIAL PRIMARY KEY ,
+  name TEXT,
+  barber_id INTEGER,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS slot_days_timmings(
+  slot_day_timmings_id SERIAL PRIMARY KEY ,
+  day_id  INTEGER,
+  barber_id INTEGER,
+  start_time TEXT,
+  end_time TEXT,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS radius(
+  radius_id SERIAL PRIMARY KEY ,
+  radiusInKm  INTEGER,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
+
+CREATE TABLE IF NOT EXISTS appointments(
+  appointment_id SERIAL PRIMARY KEY ,
+  appointment_number  INTEGER,
+  length_id INTEGER ,
+  style_id INTEGER,
+  time_slot TEXT,
+  day TEXT,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+

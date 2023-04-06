@@ -2,6 +2,7 @@ const {pool} = require("../../config/db.config");
 
 
 exports.addReason = async (req, res) => {
+    const client = await pool.connect();
     try {
         const reason_title = req.body.reason_title;
         const percentage_deduction = req.body.percentage_deduction;
@@ -54,10 +55,14 @@ exports.addReason = async (req, res) => {
             error: err.message
         })
     }
+    finally {
+        client.release();
+      }
 
 }
 
 exports.updateReason = async (req, res) => {
+    const client = await pool.connect();
     try {
         const reason_id = req.body.reason_id;
         const percentage_deduction = req.body.percentage_deduction;
@@ -110,9 +115,13 @@ exports.updateReason = async (req, res) => {
             error: err.message
         })
     }
+    finally {
+        client.release();
+      }
 }
 
 exports.deleteReason = async (req, res) => {
+    const client = await pool.connect();
     try {
         const reason_id = req.query.reason_id;
         if (!reason_id) {
@@ -148,9 +157,13 @@ exports.deleteReason = async (req, res) => {
             error: err.message
         })
     }
+    finally {
+        client.release();
+      }
 }
 
 exports.getAllReasons = async (req, res) => {
+    const client = await pool.connect();
     try {
 
         const query = 'SELECT * FROM complain_reasons'
@@ -178,10 +191,14 @@ exports.getAllReasons = async (req, res) => {
             error: err.message
         })
     }
+    finally {
+        client.release();
+      }
 
 }
 
 exports.getReasonById = async (req, res) => {
+    const client = await pool.connect();
     try {
         const reason_id = req.query.reason_id;
 
@@ -217,5 +234,8 @@ exports.getReasonById = async (req, res) => {
             error: err.message
         })
     }
+    finally {
+        client.release();
+      }
 
 }

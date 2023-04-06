@@ -4,6 +4,7 @@ const {pool} = require("../../config/db.config");
 
 
 exports.addCommission = async (req, res) => {
+    const client = await pool.connect();
     try {
         const percentage = req.body.percentage;
         const name = req.body.name;
@@ -46,10 +47,14 @@ exports.addCommission = async (req, res) => {
             error: err.message
         })
     }
+    finally {
+        client.release();
+      }
 }
 
 
 exports.updateStatus = async (req, res) => {
+    const client = await pool.connect();
     try {
         const commission_id = req.body.commission_id;
 
@@ -96,9 +101,13 @@ exports.updateStatus = async (req, res) => {
             error: err.message
         })
     }
+    finally {
+        client.release();
+      }
 }
 
 exports.getAllCommissions = async (req, res) => {
+    const client = await pool.connect();
     try {
         const query = 'SELECT * from commissions'
         let result = await pool.query(query)
@@ -130,9 +139,13 @@ exports.getAllCommissions = async (req, res) => {
             error: err.message
         })
     }
+    finally {
+        client.release();
+      }
 }
 
 exports.getCommissionById = async (req, res) => {
+    const client = await pool.connect();
     try {
         const commission_id = req.query.commission_id;
 
@@ -169,10 +182,14 @@ exports.getCommissionById = async (req, res) => {
             error: err.message
         })
     }
+    finally {
+        client.release();
+      }
 }
 
 
 exports.updateCommission = async (req , res)=>{
+    const client = await pool.connect();
     try{
         const commission_id= req.body.commission_id;
         const name = req.body.name;
@@ -223,10 +240,14 @@ exports.updateCommission = async (req , res)=>{
             error: err.message
         })
     }
+    finally {
+        client.release();
+      }
 }
 
 
 exports.deleteCommission = async(req,res)=>{
+    const client = await pool.connect();
     try{
         const commission_id = req.query.commission_id;
 
@@ -265,4 +286,7 @@ exports.deleteCommission = async(req,res)=>{
             error: err.message
         })
     }
+    finally {
+        client.release();
+      }
 }

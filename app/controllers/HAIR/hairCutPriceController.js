@@ -1,6 +1,7 @@
 const {pool} = require("../../config/db.config");
 
 exports.setPrice = async (req, res)=>{
+    const client = await pool.connect();
     try{
         const price = req.body.price;
 
@@ -40,9 +41,13 @@ exports.setPrice = async (req, res)=>{
             error : err.message
         })
     }
+    finally {
+        client.release();
+      }
 }
 
 exports.updatePrice = async(req,res)=>{
+    const client = await pool.connect();
     try{
         const price = req.body.price;
 
@@ -71,4 +76,7 @@ exports.updatePrice = async(req,res)=>{
             error : err.message
         })
     }
+    finally {
+        client.release();
+      }
 }

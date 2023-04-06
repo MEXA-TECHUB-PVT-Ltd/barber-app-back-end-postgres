@@ -16,9 +16,9 @@ require('dotenv').config()
 const cors = require("cors");
 
 app.use(cors({
-    methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH']
-  }));
-  
+  methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH']
+}));
+
 
 // parse requests of content-type - application/json
 app.use(express.json());
@@ -30,32 +30,33 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json())
 
 app.use(cors({
-  methods: ['GET','POST','DELETE','UPDATE','PUT','PATCH']
+  methods: ['GET', 'POST', 'DELETE', 'UPDATE', 'PUT', 'PATCH']
 }));
-// const demo = require('./app/controllers/demo')
 
 
 
- app.use("/admin" , require("./app/routes/Users/adminRouts"))
- app.use("/Barber" , require("./app/routes/Users/barberRoute"))
-//  app.use("/customer" , require("./routes/customerRoute"))
+app.use("/admin", require("./app/routes/Users/adminRouts"))
+app.use("/Barber", require("./app/routes/Users/barberRoute"))
+ app.use("/customer" , require("./app/routes/Users/customerRoute"))
 
 
 
 //  app.use(auth)
- app.use("/imageUpload" , require("./app/routes/IMAGE_UPLOAD/imageUploadRoute"))
- app.use("/lenght" , require("./app/routes/HAIR/lengthRoute"))
- app.use("/hairStyle" , require("./app/routes/HAIR/hairstyleRoute"))
- app.use("/hairCutPprice" , require("./app/routes/HAIR/hairCutPriceRoute"))
- app.use("/reasonOfCancellation" , require("./app/routes/HAIR/cancellation_reasonRoute"))
-/app.use("/commission" , require("./app/routes/HAIR/commissionRoute"))
- app.use("/emailVerification" , require("./app/routes/EMAIL_VERIFICATION/EmailVerificationRoute"))
-//  app.use("/time_slot" , require("./routes/time_slotsRoute"))
-//  app.use("/slot_day" , require("./routes/slot_daysCpntroller"))
-//  app.use("/payment" , require("./routes/payment_route"))
+app.use("/imageUpload", require("./app/routes/IMAGE_UPLOAD/imageUploadRoute"))
+app.use("/lenght", require("./app/routes/HAIR/lengthRoute"))
+app.use("/hairStyle", require("./app/routes/HAIR/hairstyleRoute"))
+app.use("/hairCutPprice", require("./app/routes/HAIR/hairCutPriceRoute"))
+app.use("/reasonOfCancellation", require("./app/routes/HAIR/cancellation_reasonRoute"))
+app.use("/commission", require("./app/routes/HAIR/commissionRoute"))
+app.use("/emailVerification", require("./app/routes/EMAIL_VERIFICATION/EmailVerificationRoute"))
+app.use("/time_slot", require("./app/routes/TIME_SLOTS/slot_timmingsRoute"))
+ app.use("/slot_day" , require("./app/routes/TIME_SLOTS/slot_daysRouts"))
+app.use("/appointment" , require("./app/routes/APPOINTMENT/appointmentRoute"))
 //  app.use("/appointment" , require("./routes/appointmentRoute"))
-app.use("/reasonOfComplain" , require("./app/routes/HAIR/complain_reasonRoute"))
+app.use("/reasonOfComplain", require("./app/routes/HAIR/complain_reasonRoute"))
 //  app.use("/appointment_request" , require("./routes/appointmentRequestRoute"))
+app.use("/radius" , require("./app/routes/HAIR/radiusRoute"))
+
 
 
 app.listen(PORT, () => {
