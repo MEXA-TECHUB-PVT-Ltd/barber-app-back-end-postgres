@@ -54,7 +54,7 @@ app.use("/time_slot", require("./app/routes/TIME_SLOTS/slot_timmingsRoute"))
 app.use("/appointment" , require("./app/routes/APPOINTMENT/appointmentRoute"))
 //  app.use("/appointment" , require("./routes/appointmentRoute"))
 app.use("/reasonOfComplain", require("./app/routes/HAIR/complain_reasonRoute"))
-//  app.use("/appointment_request" , require("./routes/appointmentRequestRoute"))
+app.use("/appointment_request" , require("./app/routes/APPOINTMENT/appointment_requestRoute"))
 app.use("/radius" , require("./app/routes/HAIR/radiusRoute"))
 
 

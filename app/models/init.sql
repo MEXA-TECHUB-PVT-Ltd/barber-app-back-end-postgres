@@ -9,7 +9,8 @@ CREATE TABLE IF NOT EXISTS barbers(
   gender TEXT,
   age TEXT ,
   experiance TEXT,
-  saloon_location  POINT , 
+  saloon_longitude FLOAT,
+  saloon_latitude FLOAT, 
   block_status TEXT DEFAULT 'inactive',
   saloon_location_address  TEXT ,
   stripe_account_id TEXT ,
@@ -137,6 +138,16 @@ CREATE TABLE IF NOT EXISTS appointments(
   style_id INTEGER,
   time_slot TEXT,
   day TEXT,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS appointment_requests(
+  appointment_request_id SERIAL PRIMARY KEY ,
+  appointment_id INTEGER  ,
+  customer_id  INTEGER,
+  barber_id INTEGER ,
+  status TEXT default 'pending',
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
 );

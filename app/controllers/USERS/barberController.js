@@ -191,16 +191,16 @@ exports.updateProfile = async (req, res) => {
         const gender = req.body.gender;
         const age = req.body.age;
         const experiance = req.body.experiance;
-        let saloon_long = req.body.saloon_long;
-        let saloon_lat = req.body.saloon_lat;
+        let saloon_longitude = req.body.saloon_longitude;
+        let saloon_latitude = req.body.saloon_latitude;
         const block_status = req.body.block_status;
 
         const saloon_location_address = req.body.saloon_location_address;
 
-        if (saloon_lat && !saloon_long || saloon_long && !saloon_lat) {
+        if (saloon_latitude && !saloon_longitude || saloon_longitude && !saloon_latitude) {
             return (
                 res.json({
-                    message: "Must provide saloon_lat and saloon_long both",
+                    message: "Must provide saloon_latitude and saloon_longitude both",
                     status: false
                 })
             )
@@ -216,14 +216,12 @@ exports.updateProfile = async (req, res) => {
                 )
             }
         }
-
-        saloon_lat = parseFloat(saloon_lat);
-        saloon_long = parseFloat(saloon_long)
         let query;
-        let values;
-        
-        if(!saloon_lat & !saloon_long){
-             query = 'UPDATE barbers SET user_name = $1 , device_token = $2 , profile_image = $3 ,gender = $4 , age= $5 , experiance= $6  WHERE id = $7 RETURNING*'
+        saloon_latitude = parseFloat(saloon_latitude);
+        saloon_longitude = parseFloat(saloon_longitude)
+
+        if(!saloon_latitude & !saloon_longitude){
+             query = 'UPDATE barbers SET user_name = $1 , device_token = $2 , profile_image = $3 ,gender = $4 , age= $5 , experiance= $6 ,saloon_location_address=$8 WHERE id = $9 RETURNING*'
              values =[
                 user_name ? user_name : null , 
                 device_token ? device_token : null ,
@@ -231,11 +229,12 @@ exports.updateProfile = async (req, res) => {
                 gender ? gender : null,
                 age ? age : null,
                 experiance ? experiance : null,
+                saloon_location_address? saloon_location_address : null,
                 barber_id ? barber_id : null,
             ]
         }
         else{
-        query = `UPDATE barbers SET user_name = $1 , device_token = $2 , profile_image = $3 ,gender = $4 , age= $5 , experiance= $6 , saloon_location =POINT(${saloon_long} , ${saloon_lat})  ,saloon_location_address=$7 ,  block_status=$8 WHERE id = $9 RETURNING*`
+        query = `UPDATE barbers SET user_name = $1 , device_token = $2 , profile_image = $3 ,gender = $4 , age= $5 , experiance= $6  ,saloon_location_address=$7 , saloon_longitude = $8 , saloon_latitude = $9,  block_status=$10 WHERE id = $11 RETURNING*`
          values =[
             user_name ? user_name : null , 
             device_token ? device_token : null ,
@@ -243,7 +242,9 @@ exports.updateProfile = async (req, res) => {
             gender ? gender : null,
             age ? age : null,
             experiance ? experiance : null,
-            saloon_location_address? saloon_location_address :null,
+            saloon_location_address? saloon_location_address : null,
+            saloon_longitude ? saloon_longitude : null,
+            saloon_latitude ? saloon_latitude : null,
             block_status ? block_status : null,
             barber_id ? barber_id : null,
         ]
